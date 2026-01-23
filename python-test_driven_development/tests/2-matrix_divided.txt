@@ -1,0 +1,139 @@
+=============================
+The ``2-matrix_divided`` module
+=============================
+
+>>> matrix_divided = __import__('2-matrix_divided').matrix_divided
+
+1. Cas normaux (Happy Path)
+===========================
+Entiers :
+>>> matrix = [[1, 2, 3], [4, 5, 6]]
+>>> matrix_divided(matrix, 3)
+[[0.33, 0.67, 1.0], [1.33, 1.67, 2.0]]
+
+Floats :
+>>> matrix = [[1.2, 2.5], [4.8, 5.2]]
+>>> matrix_divided(matrix, 2)
+[[0.6, 1.25], [2.4, 2.6]]
+
+Vérification que la matrice originale n'est pas modifiée :
+>>> matrix
+[[1.2, 2.5], [4.8, 5.2]]
+
+2. Erreurs sur 'div'
+====================
+Pas un nombre (string) :
+>>> matrix_divided([[1, 2], [3, 4]], "3")
+Traceback (most recent call last):
+    ...
+TypeError: div must be a number
+
+Pas un nombre (None) :
+>>> matrix_divided([[1, 2], [3, 4]], None)
+Traceback (most recent call last):
+    ...
+TypeError: div must be a number
+
+Division par zéro :
+>>> matrix_divided([[1, 2], [3, 4]], 0)
+Traceback (most recent call last):
+    ...
+ZeroDivisionError: division by zero
+
+3. Erreurs sur la structure de la matrice
+=========================================
+Pas une liste :
+>>> matrix_divided("not a list", 3)
+Traceback (most recent call last):
+    ...
+TypeError: matrix must be a matrix (list of lists) of integers/floats
+
+Liste de non-listes (Ex: liste d'entiers) :
+>>> matrix_divided([1, 2, 3], 3)
+Traceback (most recent call last):
+    ...
+TypeError: matrix must be a matrix (list of lists) of integers/floats
+
+Matrice vide :
+>>> matrix_divided([], 3)
+Traceback (most recent call last):
+    ...
+TypeError: matrix must be a matrix (list of lists) of integers/floats
+
+Matrice contenant une liste vide :
+>>> matrix_divided([[], []], 3)
+Traceback (most recent call last):
+    ...
+TypeError: matrix must be a matrix (list of lists) of integers/floats
+
+4. Erreurs sur les lignes (Taille)
+==================================
+Lignes de tailles différentes :
+>>> matrix_divided([[1, 2, 3], [4, 5]], 3)
+Traceback (most recent call last):
+    ...
+TypeError: Each row of the matrix must have the same size
+
+5. Erreurs sur les éléments internes
+====================================
+Contient un String :
+>>> matrix_divided([[1, 2], [3, "4"]], 3)
+Traceback (most recent call last):
+    ...
+TypeError: matrix must be a matrix (list of lists) of integers/floats
+
+Contient None :
+>>> matrix_divided([[1, None], [3, 4]], 3)
+Traceback (most recent call last):
+    ...
+TypeError: matrix must be a matrix (list of lists) of integers/floats
+
+Contient une liste (matrice 3D non autorisée) :
+>>> matrix_divided([[1, 2], [3, [4]]], 3)
+Traceback (most recent call last):
+    ...
+TypeError: matrix must be a matrix (list of lists) of integers/floats
+
+6. Cas limites (Edge Cases)
+===========================
+Division d'un nombre négatif :
+>>> matrix_divided([[ -10, -20 ], [ -30, 40 ]], 10)
+[[-1.0, -2.0], [-3.0, 4.0]]
+
+Division par un nombre infini (float('inf')) :
+>>> matrix_divided([[1, 2], [3, 4]], float('inf'))
+[[0.0, 0.0], [0.0, 0.0]]
+
+Matrice avec des nombres NaN (Not a Number) :
+>>> matrix_divided([[float('nan'), 2], [3, 4]], 2)
+[[nan, 1.0], [1.5, 2.0]]
+
+7. Tests de priorité des erreurs
+================================
+Si la matrice est nulle ET div est une string, l'erreur de matrice prime :
+>>> matrix_divided(None, "pas un nombre")
+Traceback (most recent call last):
+    ...
+TypeError: matrix must be a matrix (list of lists) of integers/floats
+
+8. Nombres négatifs pour div
+============================
+>>> matrix_divided([[10, -20], [30, 40]], -5)
+[[-2.0, 4.0], [-6.0, -8.0]]
+
+9. Éléments de types mixtes (Int et Float)
+==========================================
+>>> matrix_divided([[1, 2.2], [3, 4.4]], 2)
+[[0.5, 1.1], [1.5, 2.2]]
+
+10. Autres types invalides pour div
+===================================
+>>> matrix_divided([[1, 2], [3, 4]], [2])
+Traceback (most recent call last):
+    ...
+TypeError: div must be a number
+
+>>> matrix_divided([[1, 2], [3, 4]], {1})
+Traceback (most recent call last):
+    ...
+TypeError: div must be a number

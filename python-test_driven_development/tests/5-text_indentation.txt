@@ -1,0 +1,52 @@
+The `text_indentation` module
+=============================
+
+>>> text_indentation = __import__('5-text_indentation').text_indentation
+
+1. Cas standard
+===============
+>>> text_indentation("Holberton. School? : Python")
+Holberton.
+<BLANKLINE>
+School?
+<BLANKLINE>
+:
+<BLANKLINE>
+Python
+
+2. Gestion des espaces (Trim)
+=============================
+Il ne doit pas y avoir d'espaces au début des lignes après le saut :
+>>> text_indentation("Sentence 1?     Sentence 2.     Sentence 3")
+Sentence 1?
+<BLANKLINE>
+Sentence 2.
+<BLANKLINE>
+Sentence 3
+
+3. Chaîne vide ou uniquement espaces
+====================================
+>>> text_indentation("")
+>>> text_indentation("       ")
+
+4. Erreurs de Type
+==================
+>>> text_indentation(123)
+Traceback (most recent call last):
+    ...
+TypeError: text must be a string
+
+>>> text_indentation(None)
+Traceback (most recent call last):
+    ...
+TypeError: text must be a string
+
+5. Caractères collés sans espaces
+=================================
+>>> text_indentation("Test.Test?Test:")
+Test.
+<BLANKLINE>
+Test?
+<BLANKLINE>
+Test:
+<BLANKLINE>
